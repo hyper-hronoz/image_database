@@ -1,0 +1,56 @@
+#include<iostream>
+#include<vector>
+#include<functional>
+
+using namespace std;
+
+template<class T>
+class AbstractFactory {
+    virtual T create() = 0; 
+};
+
+class MenuItem {
+    string title;
+    function<void()> callback;
+
+ public:
+    MenuItem(string title) {
+        this->title = title;
+    }
+
+    MenuItem(string title, function<void()> callback) : MenuItem(title) {
+        this->callback = callback;
+    }
+
+    ~MenuItem() {}
+};
+
+class MenuItemFactory : public AbstractFactory<MenuItem>{
+ public:
+    MenuItem *create(string title, function<void()> callback) {
+         return new MenuItem{title, callback};
+    }
+};
+
+class MenuItemProvider {
+ private:
+    static vector<MenuItem> menuItems;
+
+ public:
+    static void printMenu() {
+        for (auto menuItem : menuItems) {
+            cout << &menuItem << endl;
+        };
+    }
+
+    static void append() {
+            
+    }
+};
+
+int main() {
+    MenuItemFactory *factory;
+
+
+    return 0;
+}
