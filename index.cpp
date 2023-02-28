@@ -4,11 +4,6 @@
 
 using namespace std;
 
-template<class T>
-class AbstractFactory {
-    virtual T create() = 0; 
-};
-
 class MenuItem {
  private:
     string title;
@@ -23,6 +18,7 @@ class MenuItem {
 
     MenuItem(int id, string title, function<void()> callback) : MenuItem(id, title) {
         this->callback = callback;
+        this->id = id;
     }
 
     string getTitle() {
@@ -40,13 +36,15 @@ class MenuItem {
     ~MenuItem() {}
 };
 
-class MenuItemFactory : public AbstractFactory<MenuItem>{
+class MenuItemFactory {
  private:
-     int id = 0;
+    int id = 0;
+
  public:
     MenuItem *create(string title, function<void()> callback) {
-        MenuItem *menuItem = new MenuItem{this->id, title, callback};
-        this->id++;
+
+        MenuItem *menuItem = new MenuItem{id, title, callback};
+        id++;
         return menuItem;
     }
 };
@@ -78,52 +76,60 @@ class Menu {
 
 class Fucker {
 
-    public:
-        void doStuff() {
-            cout << "Ebash" << endl;
-        };
+ public:
+    void doStuff() {
+        cout << "Ebash" << endl;
+    };
 };
 
 int main() {
     Menu menu;
 
-    MenuItemFactory *menuItemFactory;
+    MenuItemFactory *menuItemFactory = new MenuItemFactory{};
 
-    Fucker fucker;
-
-    menu.append(*(menuItemFactory->create("Ведение базы фотографий", [&fucker]() {
+    menu.append(*(menuItemFactory->create("Ведение базы фотографий", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("╰─Добавить фотку", [&fucker]() {
+    menu.append(*(menuItemFactory->create("╰─Добавить фотку", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("╰─Удалить фотку", [&fucker]() {
+    menu.append(*(menuItemFactory->create("╰─Удалить фотку", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("╰─Редиктировать фотку", [&fucker]() {
+    menu.append(*(menuItemFactory->create("╰─Редиктировать фотку", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("╰─Сортировать фотки", [&fucker]() {
+    menu.append(*(menuItemFactory->create("╰─Сортировать фотки", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("Ведение базы отмеченных людей на фото", [&fucker]() {
+    menu.append(*(menuItemFactory->create("Ведение базы отмеченных людей на фото", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("История/Состояние", [&fucker]() {
+    menu.append(*(menuItemFactory->create("История/Состояние", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
-    menu.append(*(menuItemFactory->create("Войти/Зарегаться", [&fucker]() {
+    menu.append(*(menuItemFactory->create("Войти/Зарегаться", []() {
+        Fucker fucker;
         fucker.doStuff();
     })));
 
     menu.print();
+
+    delete menuItemFactory;
 
     return 0;
 }
